@@ -24,14 +24,11 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "*"}})
 csrf = CSRFProtect(app)
 db = MySQL(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
-
-dummy_products = []
-product_id_counter = 1
+login_manager.login_view = 'login_html'
 
 # Usuario admin fijo para demo
 USUARIO = {
@@ -73,12 +70,12 @@ def token_required(f):
         if not user:
             if request.path.startswith('/api/'):
                 return jsonify({'message': 'Token inválido o expirado'}), 401
-            return redirect(url_for('login'))
+            return redirect(url_for('login_html'))
         return f(user, *args, **kwargs)
     return decorated
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def login_html():
     if current_user.is_authenticated:
         return redirect(url_for('flask_home'))
 
@@ -106,21 +103,20 @@ def flask_home():
 def flask_logout():
     logout_user()
     flash("Has cerrado sesión correctamente.", "info")
-    return redirect(url_for('login'))
+    return redirect(url_for('login_html'))
 
 @app.route('/api/login', methods=['POST'])
 @csrf.exempt
 def api_login():
-    data = request.get_json() or {}
-    username = data.get('username', '').strip()
-    password = data.get('password', '').strip()
-    if username == USUARIO['username'] and password == USUARIO['password']:
-        token = jwt.encode(
-            {'user_id': USUARIO['id'], 'exp': datetime.utcnow() + timedelta(hours=24)},
-            app.config['SECRET_KEY'], algorithm='HS256'
-        )
-        resp = make_response(jsonify({'message': 'Login exitoso'}))
-        resp.set_cookie('token', token, httponly=True, samesite='Lax', secure=False, max_age=86400)
+    data = request.get_json()
+    if data['username'] == USUARIO['username'] and data['password'] == USUARIO['password']:
+        token = jwt.encode({
+            'user_id': USUARIO['id'],
+            'exp': datetime.utcnow() + timedelta(hours=3)
+        }, app.config['SECRET_KEY'], algorithm='HS256')
+
+        resp = jsonify({'message': 'Login correcto'})
+        resp.set_cookie('token', token, httponly=True)
         return resp
     return jsonify({'message': 'Credenciales incorrectas'}), 401
 
@@ -131,9 +127,13 @@ def api_logout():
     resp.set_cookie('token', '', expires=0)
     return resp
 
+# Datos en memoria para ejemplo
+productos = []
+product_id_counter = 1
+
 @app.route('/api/productos', methods=['GET'])
 def api_productos():
-    return jsonify(dummy_products)
+    return jsonify(productos)
 
 @app.route('/api/productos', methods=['POST'])
 @token_required
@@ -172,7 +172,7 @@ def add_product(user):
         'precio': precio,
         'imagen': imagen_path
     }
-    dummy_products.append(producto)
+    productos.append(producto)
     product_id_counter += 1
     return jsonify({'message': 'Producto agregado', 'producto': producto}), 201
 
