@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iniciar Sesión - Agencia de Viajes</title>
+  <link rel="icon" href="https://preview.redd.it/hey-ado-fans-does-anyone-know-who-drew-this-i-need-to-know-v0-4fs5wjahbj0c1.jpg?width=640&crop=smart&auto=webp&s=a9c574a1764c63913b4e5cfe7ca8ec5726799465" type="image/x-icon" />
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: url('https://billboardphilippines.com/wp-content/uploads/2024/10/ADO-FTR-IMG-1600x838.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(6px);
+      z-index: 0;
+    }
+
+    .login-box {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 3rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 100%;
+      backdrop-filter: blur(4px);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: #28a745;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 1rem;
+    }
+
+    .form-control:focus {
+      border-color: #28a745;
+      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+
+    .form-control[aria-invalid="true"] {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+
+    #message {
+      min-height: 24px;
+      color: #dc3545;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .btn-primary {
+      background-color: #28a745;
+      border-color: #28a745;
+      border-radius: 8px;
+      font-weight: 600;
+      padding: 0.75rem;
+    }
+
+    .btn-primary:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <main class="login-box">
+    <h1>Iniciar Sesión</h1>
+    <form  method='post'id="loginForm" autocomplete="off">
+      <div class="mb-3">
+        <label for="username" class="form-label">Usuario</label>
+        <input type="text" id="username" class="form-control" placeholder="admin" required aria-invalid="false" autofocus />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" id="password" class="form-control" placeholder="123" required aria-invalid="false" />
+      </div>
+      <div id="message"></div>
+      <div class="d-grid">
+        <button type="submit" id="submitBtn" class="btn btn-primary">Entrar</button>
+      </div>
+    </form>
+  </main>
+
+  <script defer>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('loginForm');
+      const u = document.getElementById('username');
+      const p = document.getElementById('password');
+      const msg = document.getElementById('message');
+      const btn = document.getElementById('submitBtn');
+  
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // <-- Esto evita recargar la página
+        msg.textContent = '';
+        u.removeAttribute('aria-invalid');
+        p.removeAttribute('aria-invalid');
+  
+        const username = u.value.trim();
+        const password = p.value.trim();
+  
+        if (!username || !password) {
+          if (!username) u.setAttribute('aria-invalid', 'true');
+          if (!password) p.setAttribute('aria-invalid', 'true');
+          msg.textContent = 'Usuario y contraseña son obligatorios.';
+          return;
+        }
+  
+        btn.disabled = true;
+        btn.textContent = 'Validando…';
+  
+        try {
+          const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ username, password })
+          });
+  
+          const data = await res.json();
+          if (res.ok) {
+            window.location.href = '/home';
+          } else {
+            msg.textContent = data.message || 'Credenciales incorrectas.';
+            u.setAttribute('aria-invalid', 'true');
+            p.setAttribute('aria-invalid', 'true');
+            p.value = '';
+            p.focus();
+          }
+        } catch (err) {
+          msg.textContent = 'Error de conexión con el servidor.';
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Entrar';
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Viajero Sololá</title>
+  <link rel="icon" href="https://preview.redd.it/hey-ado-fans-does-anyone-know-who-drew-this-i-need-to-know-v0-4fs5wjahbj0c1.jpg?width=640&crop=smart&auto=webp&s=a9c574a1764c63913b4e5cfe7ca8ec5726799465" type="image/x-icon" />
+
+  <!-- Bootstrap CSS y Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <style>
+    /* Transiciones para tema */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      background-color: #cccccc;
+      color: #212529;
+    }
+
+    /* Tema oscuro */
+    body.dark-mode {
+      background-color: #121212;
+      color: hsl(0, 0%, 88%);
+    }
+    body.dark-mode a {
+      color: #42aaff !important;
+    }
+    body.dark-mode .bg-light {
+      background-color: #2c2c2c !important;
+    }
+    body.dark-mode .navbar-light {
+      background-color: #1e1e1e !important;
+    }
+    body.dark-mode .navbar-light .navbar-brand,
+    body.dark-mode .navbar-light .nav-link {
+      color: #e0e0e0 !important;
+    }
+    body.dark-mode .btn-outline-dark {
+      border-color: #e0e0e0;
+      color: #e0e0e0;
+    }
+    body.dark-mode footer {
+      background: linear-gradient(to right, #000000, #1a1a1a);
+      color: #ccc;
+    }
+    body.dark-mode .text-muted {
+      color: #bbb !important;
+    }
+    /* Barra superior contacto */
+    .topbar {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+    }
+    .topbar a {
+      color: #28a745;
+      text-decoration: none;
+    }
+    /* Navbar */
+    .navbar-brand h1 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color:  #28a745;
+    }
+    .navbar-brand h1 .text-success {
+      color: #28a745;
+    }
+    .navbar-light .navbar-nav .nav-link {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .navbar-light .navbar-nav .nav-link.text-success {
+      color: #28a745 !important;
+    }
+    /* Hero Section */
+    .hero-section {
+      height: 70vh;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background-size: cover;
+      background-position: center center;
+      position: relative;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      padding: 0 1rem;
+    }
+    .hero-content h1 {
+      font-weight: 700;
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .hero-content p {
+      font-size: 1.25rem;
+    }
+    /* Cards */
+    .card-producto {
+  background-color: #fff3f3;
+/* Borde negro   border: 4px solid #000000;  */
+  border-radius: 10px;       /* Ángulo redondeado */
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+    .card-producto:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    .card-producto img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      background-color: #f1f1f1;
+      border-radius: 8px;
+    }
+    .card-producto h5 {
+      margin: 1rem 1rem 0.5rem;
+      font-weight: 700;
+      color: #212529;
+    }
+    .card-producto p {
+      margin: 0 1rem 1rem;
+      color: #555;
+      flex-grow: 1;
+    }
+    .card-producto .precio {
+      margin: 0 1rem 1rem;
+      font-weight: 700;
+      color: #28a745;
+      font-size: 1.1rem;
+    }
+    /* Footer */
+    footer {
+      background-color: #212529;
+      color: #eee;
+      padding: 3rem 0 1.5rem;
+    }
+    footer a {
+      color: #90caf9;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    footer .text-muted {
+      color: #bbb;
+    }
+    /* Botón modo oscuro */
+    #toggleTheme {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1050;
+      border-radius: 50%;
+      width: 3.5rem;
+      height: 3.5rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #toggleTheme:hover {
+      background-color: #1e7e34;
+    }
+    body.dark-mode #toggleTheme {
+      background-color: #ffc107;
+      color: #ffffff;
+    }
+    body.dark-mode #toggleTheme:hover {
+      background-color: #e0a800;
+    }
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
+      }
+      .card-producto img {
+        height: 150px;
+      }
+
+      .navbar-toggler-icon {
+    filter: brightness(0) invert(1); /* hace el ícono blanco */
+  }
+
+
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra superior contacto -->
+  <div class="topbar">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap">
+      <div class="d-flex align-items-center gap-3 flex-wrap">
+        <img src="https://i.pinimg.com/736x/64/0f/15/640f154748584de5d5f2571dfae07e14.jpg" alt="Logo" style="height: 30px;">
+        <a href="mailto:viajerox@gmail.com"><i class="bi bi-envelope"></i> viajerox@gmail.com</a>
+
+        <a class="border-start ps-3"><i class="bi bi-telephone-fill"></i> +502 xxxx xxx5</a>
+      </div>
+      <div class="d-flex gap-3">
+        <a href="#" aria-label="Facebook" class="text-success"><i class="bi bi-facebook"></i></a>
+        <a href="#" aria-label="Twitter" class="text-success"><i class="bi bi-twitter"></i></a>
+        <a href="#" aria-label="Instagram" class="text-success"><i class="bi bi-instagram"></i></a>
+        <a href="#" aria-label="YouTube" class="text-success"><i class="bi bi-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark shadow-sm">
+    <div class="container">
+      <a href="#" class="navbar-brand">
+        <h1>VIA<span class="text-success">JERO</span></h1>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+      
+
+
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <div class="navbar-nav align-items-lg-center gap-4">
+          <a href="" class="nav-link fw-bold text-success">Inicio</a>
+          <a href="" class="nav-link fw-bold text-white">Acerca de</a>
+          <a href="/login" class="btn btn-light text-success fw-bold">Iniciar sesión</a>
+  
+
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Botón para activa el modo oscuro y el modo claro -->
+  <button id="toggleTheme" title="Cambiar tema" aria-label="Toggle dark mode">
+    <i class="bi bi-moon" id="themeIcon"></i>
+  </button>
+
+  <!-- Hero Carousel -->
+  <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000" aria-label="Carrusel de imágenes">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="hero-section" style="background-image: url('https://polvora.com.mx/wp-content/uploads/2024/11/ado_portafa.webp');">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <h1>Explora el mundo con nosotros</h1>
+            <p>Descubre los mejores destinos al mejor precio</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="hero-section" style="background-image: url('https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,q_75,w_1200/v1/crm/fortworth/0722-FortWorth-Ado-1200x700_7C0C6A3F-99C3-4D05-BFD0A3D2334600A0_2a42f57d-d5b3-4741-90f03f1732c4e583.jpg');">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <h1>Vive la aventura</h1>
+            <p>Conoce culturas únicas y paisajes increíbles</p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="hero-section" style="background-image: url('https://pm1.aminoapps.com/8965/238dded23cd8a05d385971bab9f2828a221a86d4r1-812-529v2_hq.jpg');">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <h1>Haz tu sueño realidad</h1>
+            <p>Viaja con seguridad, comodidad y estilo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev" aria-label="Anterior">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next" aria-label="Siguiente">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+  <!-- Sección Acerca de -->
+  <section class="container py-5">
+    <div class="row align-items-center gap-4">
+      <div class="col-md-6">
+        <img src="https://images2.alphacoders.com/131/thumb-1920-1314603.png" alt="Tour" class="img-fluid rounded shadow" />
+      </div>
+      <div class="col-md-5">
+        <small class="text-success fw-semibold">ACERCA DE NOSOTROS</small>
+        <h2 class="fw-bold mb-3">Ofrecemos los Mejores Paquetes de Tour Dentro de Tu Presupuesto</h2>
+        <p>Somos una agencia comprometida en brindarte experiencias inolvidables, con seguridad, confianza y los mejores precios para que tu viaje sea perfecto.</p>
+        <div class="row g-2 mt-4">
+          <div class="col-6"><img src="https://images2.alphacoders.com/131/thumb-1920-1314603.png" alt="Miniatura 1" class="img-fluid rounded shadow-sm" /></div>
+          <div class="col-6"><img src="https://images2.alphacoders.com/131/thumb-1920-1314603.png" alt="Miniatura 2" class="img-fluid rounded shadow-sm" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+<!-- Características de los paquetes -->
+<div class="container mt-5">
+  <div class="row text-center">
+    <div class="col-12 mb-4">
+      <h5 class="fw-bold">¿Qué incluyen nuestros paquetes?</h5>
+      <p class="text-muted">Ofrecemos lo mejor para tu experiencia de viaje.</p>
+    </div>
+
+    <div class="col-md-4">
+      <div class="bg-light p-4 rounded shadow-sm h-100">
+        <div class="feature-icon text-success fs-2 mb-3"><i class="bi bi-box-seam"></i></div>
+        <h6 class="fw-semibold">Precios Accesibles</h6>
+        <p class="text-muted">Viaja sin preocuparte por el presupuesto.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="bg-light p-4 rounded shadow-sm h-100">
+        <div class="feature-icon text-success fs-2 mb-3"><i class="bi bi-check-circle"></i></div>
+        <h6 class="fw-semibold">Mejores Servicios</h6>
+        <p class="text-muted">Calidad garantizada en cada destino.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="bg-light p-4 rounded shadow-sm h-100">
+        <div class="feature-icon text-success fs-2 mb-3"><i class="bi bi-globe"></i></div>
+        <h6 class="fw-semibold">Cobertura Mundial</h6>
+        <p class="text-muted">Explora destinos en todo el mundo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Destinos -->
+<div class="container py-5">
+  <div class="section-title text-center mb-4">
+    <small class="text-success">DESTINO</small>
+    <h3>Explora los Mejores Destinos</h3>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-4 position-relative">
+      <div class="card bg-dark text-white">
+        <img src="https://images2.alphacoders.com/131/thumb-1920-1314603.png" class="card-img" alt="Estados Unidos" />
+        <div class="destino-overlay">
+          <h5 class="card-title mb-0">Estados Unidos</h5>
+          <small>100 Ciudades</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mt-3 text-muted small">
+    Reino Unido · Australia · India · Sudáfrica · Indonesia
+  </div>
+</div>
+<!-- Servicios -->
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <small class="text-success fw-semibold">SERVICIOS</small>
+    <h3 class="fw-bold">Tours y Viajes a tu Medida</h3>
+    <p class="text-muted">Conoce todo lo que tenemos para ofrecerte en tu próxima aventura.</p>
+  </div>
+
+  <div class="row text-center g-4">
+    <div class="col-md-4">
+      <div class="bg-light p-4 rounded shadow-sm h-100">
+        <div class="feature-icon text-success fs-2 mb-3"><i class="bi bi-map"></i></div>
+        <h6 class="fw-semibold">Guía de Viaje</h6>
+        <p class="text-muted small">Contamos con guías turísticos profesionales para que disfrutes al máximo tu experiencia.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="bg-light p-4 rounded shadow-sm h-100">
+        <div class="feature-icon text-success fs-2 mb-3"><i class="bi bi-ticket-perforated"></i></div>
+        <h6 class="fw-semibold">Reserva de Boletos</h6>
+        <p class="text-muted small">Gestionamos la compra de boletos aéreos, terrestres o marítimos de forma segura y rápida.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="bg-light p-4 rounded shadow-sm h-100">
+        <div class="feature-icon text-success fs-2 mb-3"><i class="bi bi-building"></i></div>
+        <h6 class="fw-semibold">Reserva de Hotel</h6>
+        <p class="text-muted small">Te ayudamos a encontrar alojamiento con las mejores tarifas y ubicaciones.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Paquetes -->
+<div class="container py-5">
+  <div class="section-title text-center mb-4">
+    <small class="text-success">PAQUETES</small>
+    <h3>Paquetes de Tour para la familia</h3>
+  </div>
+  <div class="row text-center" id="productos">
+    <!-- Los productos se cargarán aquí dinámicamente -->
+  </div>
+</div>
+
+<!-- Guías -->
+<div class="container py-5">
+  <div class="section-title text-center mb-4">
+    <small class="text-success">GUÍAS</small>
+    <h3>Nuestros Guías de Viaje</h3>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-3 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <img src="https://images2.alphacoders.com/131/thumb-1920-1314603.png" class="card-img-top" alt="Guía José Cañiz" />
+        <div class="card-body text-center">
+          <h6 class="fw-bold">José Cañiz</h6>
+          <small class="fw-bold">Licenciado en turismo</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Blog -->
+<div class="container py-5">
+  <div class="section-title text-center mb-4">
+    <small class="text-success">NUESTRO BLOG</small>
+    <h3>Últimas Noticias de Nuestro Blog</h3>
+  </div>
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <img src="https://images2.alphacoders.com/131/thumb-1920-1314603.png" class="card-img-top" alt="Blog Recorrido EEUU" />
+        <div class="card-body text-start">
+          <span class="badge bg-success mb-2">Nuevo</span>
+          <p class="fw-bold">JOSÉ CAÑIZ | VIAJERO</p>
+          <h6 class="fw-bold">Se hará un recorrido en EEUU, New York</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-center text-md-start text-white">
+  <div class="container">
+    <div class="row justify-content-between py-5">
+      <!-- Marca y descripción -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <a href="#" class="navbar-brand d-block mb-3">
+          <h1 class="text-white fw-bold">VIA<span class="text-success">JERO</span></h1>
+        </a>
+        <p class="small text-white-50">
+          Te llevamos a los mejores destinos con confianza, seguridad y precios accesibles.
+        </p>
+        <h6 class="text-uppercase mt-4 mb-3 align-items-center " style="letter-spacing: 2px;">Síguenos</h6>
+        <div class="d-flex gap-3 fs-5 align-items-center justify-content-center">
+          <a href="#" class="text-success" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="text-success" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="text-success" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="text-success" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- Contacto -->
+      <div class="col-lg-3 col-md-6 mb-4 justify-content-center align-items-center">
+        <h5 class="text-uppercase mb-4" style="letter-spacing: 2px;">Contáctanos</h5>
+        <ul class="list-unstyled text-white-50 small">
+          <li class="mb-2"><i class="bi bi-geo-alt-fill me-2"></i>4 calle, zona 1, Sololá</li>
+          <li class="mb-2"><i class="bi bi-envelope-fill me-2"></i>viajerox@gmail.com</li>
+          <li><i class="bi bi-telephone-fill me-2"></i>+502 xxxx xxx5</li>
+        </ul>
+      </div>
+
+      <!-- Horarios -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <h5 class="text-uppercase mb-4" style="letter-spacing: 2px;">Horarios</h5>
+        <p class="small text-white-50 mb-2">Lunes - Sábado: 8:00 am - 6:00 pm</p>
+        <p class="small text-white-50">Domingos: Cerrado</p>
+      </div>
+    </div>
+
+    <hr class="border-light" />
+
+    <!-- Copyright -->
+    <div class="text-center small text-white-50 py-3">
+      &copy; 2025 Viajero Sololá. Todos los derechos reservados.
+    </div>
+  </div>
+</footer>
+
+
+  <!-- Bootstrap JS y Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script modo oscuro -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Ejecutar carga de productos (si existe esa función)
+    if (typeof cargarProductos === 'function') {
+      cargarProductos();
+    }
+
+    const toggleBtn = document.getElementById('toggleTheme');
+    const themeIcon = document.getElementById('themeIcon');
+    const body = document.body;
+
+    // Verifica si se guardó preferencia en localStorage
+    const savedTheme = localStorage.getItem('darkMode');
+    const prefersDark = savedTheme === 'true';
+
+    if (prefersDark) {
+      body.classList.add('dark-mode');
+      themeIcon.classList.replace('bi-moon', 'bi-sun');
+    }
+
+    // Evento de clic para alternar tema
+    toggleBtn.addEventListener('click', () => {
+      const isDark = body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', isDark);
+      themeIcon.classList.replace(isDark ? 'bi-moon' : 'bi-sun', isDark ? 'bi-sun' : 'bi-moon');
+    });
+  });
+</script>
+
+</body>
+</html>

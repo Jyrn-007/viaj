@@ -1,0 +1,152 @@
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin – Agencia de Viajes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="icon" href="https://preview.redd.it/hey-ado-fans-does-anyone-know-who-drew-this-i-need-to-know-v0-4fs5wjahbj0c1.jpg?width=640&crop=smart&auto=webp&s=a9c574a1764c63913b4e5cfe7ca8ec5726799465" type="image/x-icon" />
+  
+  <style>
+    body {
+      padding: 1rem;
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+    }
+    .card img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: contain;
+      border-radius: 6px;
+      background-color: #f0f0f0;
+    }
+    .card {
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      border-radius: 8px;
+    }
+    .form-inline input,
+    .form-inline textarea {
+      margin-bottom: 0.5rem;
+      resize: vertical;
+    }
+    .form-inline input:disabled,
+    .form-inline textarea:disabled {
+      background-color: #e9ecef;
+    }
+    @media (max-width: 575.98px) {
+      .form-inline input,
+      .form-inline textarea {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra de navegación -->
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark mb-4 rounded">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Agencia de Viajes</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarOpciones" aria-controls="navbarOpciones" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarOpciones">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Productos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Viajes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Noticias</a>
+          </li>
+        </ul>
+        <button id="logoutBtn" class="btn btn-outline-light">Cerrar sesión</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Título y botón para agregar producto -->
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <h1 class="m-0">Panel Admin productos</h1>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregar">Agregar Producto</button>
+  </div>
+
+  <!-- Modal para nuevo producto -->
+  <div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <form id="nuevoProductoForm" enctype="multipart/form-data">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalAgregarLabel">Nuevo Producto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body row g-3">
+            <div class="col-md-6">
+              <input type="text" name="nombre" class="form-control" placeholder="Nombre" required />
+            </div>
+            <div class="col-md-6">
+              <input type="number" name="precio" step="0.01" class="form-control" placeholder="Precio" required />
+            </div>
+            <div class="col-md-12">
+              <textarea name="descripcion" class="form-control" rows="2" placeholder="Descripción (opcional)"></textarea>
+            </div>
+            <div class="col-md-6">
+              <input type="file" name="imagenFile" class="form-control" accept="image/*" />
+            </div>
+            <div class="col-md-6">
+              <input type="url" name="imagenUrl" class="form-control" placeholder="URL de imagen (opcional)" />
+            </div>
+            <div id="nuevoMsg" class="text-danger ps-3"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">Agregar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor de productos -->
+  <div id="productosContainer" class="row gy-4"></div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      try {
+        // Llamada a la API para cerrar sesión
+        const res = await fetch('/api/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+  
+        if (res.ok) {
+          // Redirige al index o login al cerrar sesión
+          window.location.href = '/';
+        } else {
+          alert('No se pudo cerrar la sesión.');
+        }
+      } catch (err) {
+        console.error('Error al cerrar sesión:', err);
+        alert('Error de conexión al cerrar sesión.');
+      }
+    });
+  </script>
+  
+  
+</body>
+</html>
+

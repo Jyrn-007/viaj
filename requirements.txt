@@ -1,0 +1,6 @@
+Flask
+Flask-Cors
+Flask-Login
+Flask-MySQLdb
+Flask-WTF
+PyJWT
