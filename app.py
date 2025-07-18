@@ -23,8 +23,8 @@ app.config['SECRET_KEY'] = 'clave-super-secreta-para-produccion'
 app.config['UPLOAD_FOLDER'] = 'uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+CORS(app, supports_credentials=True)
 
-CORS(app, supports_credentials=True, resources={r"/api/*": {"origins": "*"}})
 csrf = CSRFProtect(app)
 db = MySQL(app)
 login_manager = LoginManager(app)
@@ -106,19 +106,14 @@ def flask_logout():
     return redirect(url_for('login_html'))
 
 @app.route('/api/login', methods=['POST'])
-@csrf.exempt
-def api_login():
+def login():
     data = request.get_json()
-    if data['username'] == USUARIO['username'] and data['password'] == USUARIO['password']:
-        token = jwt.encode({
-            'user_id': USUARIO['id'],
-            'exp': datetime.utcnow() + timedelta(hours=3)
-        }, app.config['SECRET_KEY'], algorithm='HS256')
-
+    if data['username'] == 'admin' and data['password'] == '123':
         resp = jsonify({'message': 'Login correcto'})
-        resp.set_cookie('token', token, httponly=True)
+        resp.set_cookie('token', 'token_fake', httponly=True)
         return resp
     return jsonify({'message': 'Credenciales incorrectas'}), 401
+
 
 @app.route('/api/logout', methods=['POST'])
 @csrf.exempt
